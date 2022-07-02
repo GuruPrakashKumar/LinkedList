@@ -1,0 +1,104 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+     public void addLast(int data, ListNode l){
+        ListNode newNode = new ListNode(data);
+        if (l == null) {
+            l = newNode;
+            return;
+        }
+
+        ListNode currNode = l;
+        while (currNode.next != null) {
+            currNode = currNode.next;
+        }
+        
+        currNode.next = newNode;
+        
+    }
+    public ListNode reverse(ListNode l){
+        ListNode prev  = null;
+        ListNode curr = l;
+        
+        while(curr != null){
+            ListNode next = curr.next;
+            
+            curr.next = prev;
+            
+            prev = curr;
+            curr = next;
+            
+        }
+        return prev;
+    }
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode L1 = reverse(l1);
+        ListNode L2 = reverse(l2);
+        
+        ListNode l3 = new ListNode(0);
+        
+        
+        // System.out.println(l3.val);
+        int carry = 0;
+        int placeValue = 0;
+        while(L1 != null && L2!= null){
+            
+            int sum = L1.val+L2.val+carry;
+            if(sum>9){
+                carry = sum/10;
+                placeValue = sum%10;
+            }else{
+                placeValue = sum;
+                carry = 0;
+            }
+            addLast(placeValue,l3);
+            L1 = L1.next;
+            L2 = L2.next;
+              
+        }
+        //if l2 list ends
+        while(L1 != null){
+            int sum = L1.val + carry;
+            if(sum>9){
+                carry = sum/10;
+                placeValue = sum%10;
+            }else{
+                placeValue = sum;
+                carry = 0;
+            }
+            addLast(placeValue,l3);
+            L1 = L1.next;
+        }
+        //if l1 list ends
+        while(L2 != null){
+            int sum = L2.val + carry;
+            if(sum>9){
+                carry = sum/10;
+                placeValue = sum%10;
+            }else{
+                placeValue = sum;
+                carry = 0;
+            }
+            addLast(placeValue,l3);
+            L2 =L2.next;
+        }
+        System.out.println("carry = "+carry);
+        //if at last carry remains then add it
+        if(carry!=0){
+            addLast(carry,l3);
+        }
+        
+        //I donno why i have to this but i have to :p
+        l3 = l3.next;
+        
+        return reverse(l3);
+    }
+}
